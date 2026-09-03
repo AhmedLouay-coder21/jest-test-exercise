@@ -1,45 +1,32 @@
 export function caesarCipher(string, key)
 {
-    let caesarString = [];
-    for(let i = 0; i < string.length; i++)
-    {
-        const characterCode = string.charCodeAt(i);
-        const isAlpha = (char) => /^[a-z]$/i.test(char);
-        if(isAlpha(string[i]))
-        {
-            if(string[i] === string[i].toUpperCase())
-            {
-                // String.fromCharCode(((characterCode + key)) % 122);
-                let number = ((characterCode + key) % 91);
-                if(number < 26)
-                {
-                    number += 65;
-                }
-                else if (number > 26 && number < 65)
-                {
-                    number = ((characterCode + key) % 65) + 65;
-                }
-                caesarString[i] = String.fromCharCode(number);
+    let result = "";
+    for (let c of string) {
+        if (/[a-zA-Z]/.test(c)) {
+            let sum = 0;
+            if (c >= 'a' && c <= 'z') {
+                // current character's order from 1 to 26
+                let current = c.charCodeAt(0) % 97;
+                // the amount to add to the current character's order
+                let toAdd = key % 26;
+                //their sum
+                sum = current + toAdd;
+                //final new character
+                result += String.fromCharCode((sum % 26) + 97);
+            } else {
+                // current character's order from 1 to 26
+                let current = c.charCodeAt(0) % 65;
+                // the amount to add to the current character's order
+                let toAdd = key % 26;
+                //their sum
+                sum = current + toAdd;
+                //final new character
+                result += String.fromCharCode((sum % 26) + 65);
             }
-            else
-            {
-                let number = ((characterCode + key) % 123);
-                if(number < 26)
-                {
-                    number += 97;
-                }
-                else if (number > 26 && number < 97)
-                {
-                    number = ((characterCode + key) % 97) + 97;
-                }
-                caesarString[i] = String.fromCharCode(number);
-            }
-        }
-        else
-        {
-            caesarString[i] = string[i];
+        } else {
+            result += c;
         }
     }
-    return caesarString.join('');
+    return result;
 }
 caesarCipher('XYZ', 1);
